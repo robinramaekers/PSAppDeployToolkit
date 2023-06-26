@@ -5765,7 +5765,7 @@ The registry key path.
 
 .PARAMETER Name
 
-The value name, if nott provided or empty it will default to the (default) registry key
+The value name, if not provided or empty it will default to the (default) registry key
 
 .PARAMETER Value
 
@@ -5831,7 +5831,7 @@ https://psappdeploytoolkit.com
         [ValidateNotNullorEmpty()]
         [String]$Key,
         [Parameter(Mandatory = $false)]
-        #[ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty()]
         [String]$Name,
         [Parameter(Mandatory = $false)]
         $Value,
@@ -5893,7 +5893,8 @@ https://psappdeploytoolkit.com
                 ## Update registry value if it does exist
                 Else {
                     [String]$RegistryValueWriteAction = 'update'
-                    if (($null -eq $Name) -or ($name -eq '')) {
+                    #[validatenotnullorempty()] with an optional parameter always results in an empty variable (not null)
+                    if ($name -eq '') {
                         $name = '(Default)'
                     }
 
