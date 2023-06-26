@@ -5765,7 +5765,7 @@ The registry key path.
 
 .PARAMETER Name
 
-The value name.
+The value name, if nott provided or empty it will default to the (default) registry key
 
 .PARAMETER Value
 
@@ -5831,7 +5831,7 @@ https://psappdeploytoolkit.com
         [ValidateNotNullorEmpty()]
         [String]$Key,
         [Parameter(Mandatory = $false)]
-        [ValidateNotNullOrEmpty()]
+        #[ValidateNotNullOrEmpty()]
         [String]$Name,
         [Parameter(Mandatory = $false)]
         $Value,
@@ -5893,7 +5893,11 @@ https://psappdeploytoolkit.com
                 ## Update registry value if it does exist
                 Else {
                     [String]$RegistryValueWriteAction = 'update'
-                    If ($Name -eq '(Default)') {
+                    if (($null -eq $Name) -or ($name -eq '')) {
+                        $name = '(Default)'
+                    }
+
+                    If ( $Name -eq '(Default)') {
                         ## Set Default registry key value with the following workaround, because Set-ItemProperty contains a bug and cannot set Default registry key value
                         $null = $(Get-Item -LiteralPath $key -ErrorAction 'Stop').OpenSubKey('', 'ReadWriteSubTree').SetValue($null, $value)
                     }
